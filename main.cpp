@@ -7,7 +7,8 @@
 //
 
 #include <iostream>
-#include <iterator>
+#include <iterator>     // std::istream_iterator
+
 
 #include <opencv2/opencv.hpp>
 #include <tesseract/baseapi.h>
@@ -25,7 +26,13 @@ int main(int argc, const char * argv[])
     namedWindow( "" );
     moveWindow("", 0, 0);
     
-    Mat image = imread( "/Users/saburookita/Personal Projects/RobustTextDetection/TestText.png" );
+    if ( argc <= 1 )
+    {
+        std::cout << "Input image missing !! "<< std::endl << "usage:  "<<  argv[0] <<" image.png"<< std::endl;
+        return 0;
+    }
+    
+    Mat image = imread( argv[1] );
     
     /* Quite a handful or params */
     RobustTextParam param;
@@ -45,7 +52,7 @@ int main(int argc, const char * argv[])
     
     /* Apply Robust Text Detection */
     /* ... remove this temp output path if you don't want it to write temp image files */
-    string temp_output_path = "/Users/saburookita/Personal Projects/RobustTextDetection/";
+    string temp_output_path = ".";
     RobustTextDetection detector(param, temp_output_path );
     pair<Mat, Rect> result = detector.apply( image );
     
@@ -66,11 +73,14 @@ int main(int argc, const char * argv[])
     istringstream iss( out );
     copy( istream_iterator<string>(iss), istream_iterator<string>(), back_inserter( splitted ) );
     
-    /* And draw them on screen */
-    CvFont font = cvFontQt("Helvetica", 24.0, CV_RGB(0, 0, 0) );
+    /* And draw them on screen */ 
+   // CvFont font = cvFontQt("Helvetica", 24.0, CV_RGB(0, 0, 0) );
+   
     Point coord = Point( result.second.br().x + 10, result.second.tl().y );
-    for( string& line: splitted ) {
-        addText( image, line, coord, font );
+    for( string& line: splitted )
+    {
+        // cv::addText( image, line, coord, font );
+	cv::putText(image, line, coord, 1, 2, cv::Scalar(0, 0 , 255), 3 );
         coord.y += 25;
     }
     

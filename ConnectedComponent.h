@@ -12,6 +12,7 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
+
 /**
  * Structure that describes the property of the connected component
  */
