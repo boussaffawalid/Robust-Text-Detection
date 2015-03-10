@@ -74,12 +74,12 @@ int main(int argc, const char * argv[])
     copy( istream_iterator<string>(iss), istream_iterator<string>(), back_inserter( splitted ) );
     
     /* And draw them on screen */ 
-   // CvFont font = cvFontQt("Helvetica", 24.0, CV_RGB(0, 0, 0) );
+    //QtFont font = fontQt("Helvetica", 24.0, cv::Scalar(0, 0, 0) );
    
     Point coord = Point( result.second.br().x + 10, result.second.tl().y );
     for( string& line: splitted )
     {
-        // cv::addText( image, line, coord, font );
+      //   cv::addText( image, line, coord, font );
 	cv::putText(image, line, coord, 1, 2, cv::Scalar(0, 0 , 255), 3 );
         coord.y += 25;
     }
@@ -87,7 +87,7 @@ int main(int argc, const char * argv[])
     rectangle( image, result.second, Scalar(0, 0, 255), 2);
     
     /* Append the original and stroke width images together */
-    cvtColor( stroke_width, stroke_width, CV_GRAY2BGR );
+    cvtColor( stroke_width, stroke_width, COLOR_GRAY2BGR );
     Mat appended( image.rows, image.cols + stroke_width.cols, CV_8UC3 );
     image.copyTo( Mat(appended, Rect(0, 0, image.cols, image.rows)) );
     stroke_width.copyTo( Mat(appended, Rect(image.cols, 0, stroke_width.cols, stroke_width.rows)) );

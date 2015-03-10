@@ -76,7 +76,7 @@ pair<Mat, Rect> RobustTextDetection::apply( Mat& image ) {
     
 
     /* Calculate the distance transformed from the connected components */
-    cv::distanceTransform( result, result, CV_DIST_L2, 3 );
+    cv::distanceTransform( result, result, cv::DIST_L2, 3 );
     result.convertTo( result, CV_32SC1 );
     
     /* Find the stroke width image from the distance transformed */
@@ -169,8 +169,9 @@ Rect RobustTextDetection::clamp( Rect& rect, Size size ) {
 Mat RobustTextDetection::createMSERMask( Mat& grey ) {
     /* Find MSER components */
     vector<vector<Point>> contours;
-    MSER mser( 8, param.minMSERArea, param.maxMSERArea, 0.25, 0.1, 100, 1.01, 0.03, 5 );
-    mser(grey, contours);
+    vector<Rect> bboxes;
+    Ptr<MSER> mser = MSER::create(8, param.minMSERArea, param.maxMSERArea, 0.25, 0.1, 100, 1.01, 0.03, 5 );
+    mser->detectRegions(grey, contours, bboxes);
     
     /* Create a binary mask out of the MSER */
     Mat mser_mask( grey.size(), CV_8UC1, Scalar(0));
@@ -190,7 +191,7 @@ Mat RobustTextDetection::createMSERMask( Mat& grey ) {
 Mat RobustTextDetection::preprocessImage( Mat& image ) {
     /* TODO: Should do contrast enhancement here  */
     Mat grey;
-    cvtColor( image, grey, CV_BGR2GRAY );
+    cvtColor( image, grey, COLOR_BGR2GRAY );
     return grey;
 }
 

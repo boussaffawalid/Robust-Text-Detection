@@ -160,7 +160,7 @@ Mat ConnectedComponent::apply ( const Mat& image )
 
         /* Find the solidity of the blob from blob area / convex area */
         vector<vector<Point>> contours;
-        findContours ( blob, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE );
+        findContours ( blob, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE );
 
         if ( !contours.empty() )
         {
