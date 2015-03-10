@@ -9,6 +9,8 @@
 #include "ConnectedComponent.h"
 #include <stdexcept>
 
+#include <algorithm> 
+
 using namespace std;
 using namespace cv;
 
@@ -169,12 +171,12 @@ Mat ConnectedComponent::apply ( const Mat& image )
             properties[i].solidity = properties[i].area / contourArea ( hull[0] );
         }
     }
-
+ 
     /* By default, sort the properties from the area size in descending order */
-//      sort ( properties.begin(), properties.end(), [=] ( ComponentProperty& a, ComponentProperty& b )
-//      {
-//          return a.area > b.area;
-//      } );
+      std::sort ( properties.begin(), properties.end(), [=] ( ComponentProperty a, ComponentProperty b )
+      {
+         return a.area > b.area;
+      } );
 
 
     return result;
